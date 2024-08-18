@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xuecheng.content.mapper.CourseBaseMapper">
+    <sql id="Base_Column_List">
+        id, company_id, company_name, name, users, tags, mt, st, grade, teachmode, description, pic, create_date,
+        change_date,
+        create_people, change_people, audit_status, status
+    </sql>
+
+    <select id="selectById" resultType="CourseBase">
+        select
+        <include refid="Base_Column_List"/>
+        from course_base
+        where id = #{id}
+    </select>
+
+    <select id="selectByCondition" resultType="CourseBase">
+        select
+        <include refid="Base_Column_List"/>
+        from course_base
+        <where>
+            <if test="courseName != null and courseName != ''">
+                and name like concat('%', #{courseName, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="auditStatus != null and courseName != ''">
+                and audit_status = #{auditStatus}
+            </if>
+            <if test="publishStatus != null">
+                and status = #{publishStatus}
+            </if>
+        </where>
+        limit ${(pageParams.pageNo - 1) * pageParams.pageSize}, #{pageParams.pageSize}
+    </select>
+
+    <insert id="insertCourseBase" useGeneratedKeys="true" keyProperty="id">
+        insert into course_base(<include refid="Base_Column_List"/>)
+        values (
+        #{id}, #{companyId}, #{companyName}, #{name}, #{users}, #{tags}, #{mt}, #{st}, #{grade}, #{teachmode}, #{description},
+        #{pic}, #{createDate}, #{changeDate}, #{createPeople}, #{changePeople}, #{auditStatus}, #{status}
+        )
+    </insert>
+</mapper>

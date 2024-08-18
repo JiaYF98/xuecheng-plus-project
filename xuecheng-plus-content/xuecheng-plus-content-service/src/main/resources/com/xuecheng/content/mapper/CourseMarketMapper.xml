@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuecheng.content.mapper.CourseMarketMapper">
+    <sql id="Base_Column_List">
+        id, charge, price, original_price, qq, wechat, phone, valid_days
+    </sql>
+    <select id="selectById">
+        select
+        <include refid="Base_Column_List"/>
+        from course_market
+        where id = #{id}
+    </select>
+
+    <insert id="insertCourseMarket">
+        insert into course_market (<include refid="Base_Column_List"/>)
+        values (#{id}, #{charge}, #{price}, #{originalPrice}, #{qq}, #{wechat}, #{phone}, #{validDays})
+    </insert>
+</mapper>

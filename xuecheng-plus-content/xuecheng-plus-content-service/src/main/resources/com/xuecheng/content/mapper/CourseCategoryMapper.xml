@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xuecheng.content.mapper.CourseCategoryMapper">
+    <sql id="Base_Column_List">
+        id, name, label, parentid, is_show, orderby, is_leaf
+    </sql>
+
+    <select id="selectById" resultType="CourseCategory">
+        select
+        <include refid="Base_Column_List"/>
+        from course_base
+        where id = #{id}
+    </select>
+
+    <select id="selectByCondition" resultType="CourseCategory">
+        select
+        <include refid="Base_Column_List"/>
+        from course_base
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="label != null and label != ''">
+                and label = #{label}
+            </if>
+            <if test="is_show != null">
+                and is_show = #{isShow}
+            </if>
+            <if test="orderby != null">
+                and orderby = #{orderby}
+            </if>
+            <if test="is_leaf != null">
+                and is_leaf = #{isLeaf}
+            </if>
+        </where>
+        limit ${(pageParams.pageNo - 1) * pageParams.pageSize}, #{pageParams.pageSize}
+    </select>
+
+    <select id="selectTreeNodes" resultType="CourseCategory">
+        with recursive tree_nodes as (
+            select *
+            from course_category
+            where id = #{id}
+            union all
+            select child.*
+            from course_category child
+            inner join tree_nodes on tree_nodes.id = child.parentid
+        )
+        select *
+        from tree_nodes;
+    </select>
+</mapper>
