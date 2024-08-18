@@ -10,6 +10,11 @@
         create_people, change_people, audit_status, status
     </sql>
 
+    <select id="selectCount">
+        select count(*)
+        from course_base;
+    </select>
+
     <select id="selectById" resultType="CourseBase">
         select
         <include refid="Base_Column_List"/>
@@ -23,13 +28,18 @@
         from course_base
         <where>
             <if test="courseName != null and courseName != ''">
-                and name like concat('%', #{courseName, jdbcType=VARCHAR}, '%')
+                and name like concat('%',
+                #{courseName, jdbcType=VARCHAR},
+                '%'
+                )
             </if>
-            <if test="auditStatus != null and courseName != ''">
-                and audit_status = #{auditStatus}
+            <if test="auditStatus != null and auditStatus != ''">
+                and audit_status =
+                #{auditStatus}
             </if>
             <if test="publishStatus != null">
-                and status = #{publishStatus}
+                and status =
+                #{publishStatus}
             </if>
         </where>
         limit ${(pageParams.pageNo - 1) * pageParams.pageSize}, #{pageParams.pageSize}
@@ -38,8 +48,47 @@
     <insert id="insertCourseBase" useGeneratedKeys="true" keyProperty="id">
         insert into course_base(<include refid="Base_Column_List"/>)
         values (
-        #{id}, #{companyId}, #{companyName}, #{name}, #{users}, #{tags}, #{mt}, #{st}, #{grade}, #{teachmode}, #{description},
-        #{pic}, #{createDate}, #{changeDate}, #{createPeople}, #{changePeople}, #{auditStatus}, #{status}
+        #{id}, #{companyId}, #{companyName}, #{name}, #{users}, #{tags}, #{mt}, #{st}, #{grade}, #{teachmode},
+        #{description},
+        #{pic}, #{createDate}, #{changeDate}, #{createPeople}, #{changePeople}, #{courseAuditStatus}, #{status}
         )
     </insert>
+
+    <update id="updateCourseBase">
+        update course_base
+        <set>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="users != null and users != ''">
+                users = #{users},
+            </if>
+            <if test="tags != null and tags != ''">
+                tags = #{tags},
+            </if>
+            <if test="mt != null and mt != ''">
+                mt = #{mt},
+            </if>
+            <if test="st != null and st != ''">
+                st = #{st},
+            </if>
+            <if test="grade != null and grade != ''">
+                grade = #{grade},
+            </if>
+            <if test="teachmode != null and teachmode != ''">
+                teachmode = #{teachmode},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic = #{pic},
+            </if>
+            id = #{id}
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

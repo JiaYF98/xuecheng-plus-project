@@ -1,6 +1,6 @@
 package com.xuecheng.mapper;
 
-import com.xuecheng.base.enums.AuditStatus;
+import com.xuecheng.base.enums.CourseAuditStatus;
 import com.xuecheng.base.enums.CourseGrade;
 import com.xuecheng.base.enums.CourseStatus;
 import com.xuecheng.base.model.PageParams;
@@ -48,9 +48,29 @@ public class CourseBaseMapperTest {
         courseBase.setTeachmode("test-teachmode");
         courseBase.setDescription("test-description");
         courseBase.setPic("test-pic");
-        courseBase.setAuditStatus(AuditStatus.FAILED.getCode());
+        courseBase.setAuditStatus(CourseAuditStatus.FAILED.getCode());
         courseBase.setStatus(CourseStatus.UNPUBLISHED.getCode());
         courseBaseMapper.insertCourseBase(courseBase);
         Assertions.assertNotNull(courseBase.getId());
+    }
+
+    @Test
+    public void testUpdateCourseBase() {
+        CourseBase courseBase = new CourseBase();
+        courseBase.setId(122L);
+        courseBase.setCompanyId(123321L);
+        courseBase.setCompanyName("test-companyName-update");
+        courseBase.setName("test-name-update");
+        courseBase.setUsers("test-users-update");
+        courseBase.setTags("test-tags-update");
+        courseBase.setMt("1-1");
+        courseBase.setSt("1-1-1");
+        courseBase.setGrade(CourseGrade.PRIMARY.getCode());
+        courseBase.setTeachmode("test-teachmode-update");
+        courseBase.setDescription("test-description-update");
+        courseBase.setPic("test-pic");
+        courseBase.setAuditStatus(CourseAuditStatus.FAILED.getCode());
+        courseBase.setStatus(CourseStatus.UNPUBLISHED.getCode());
+        courseBaseMapper.updateCourseBase(courseBase);
     }
 }
