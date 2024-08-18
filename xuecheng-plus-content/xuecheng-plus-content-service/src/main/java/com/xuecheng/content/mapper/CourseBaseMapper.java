@@ -10,8 +10,15 @@ import java.util.List;
 
 @Mapper
 public interface CourseBaseMapper {
+    Long selectCount();
+
     CourseBase selectById(Long id);
+
     List<CourseBase> selectByCondition(PageParams pageParams, String courseName, String auditStatus, String publishStatus);
+
     @DBAutoFill(DBOperationType.INSERT)
     void insertCourseBase(CourseBase courseBase);
+
+    @DBAutoFill(DBOperationType.UPDATE)
+    Integer updateCourseBase(CourseBase courseBase);
 }

@@ -17,4 +17,33 @@
         insert into course_market (<include refid="Base_Column_List"/>)
         values (#{id}, #{charge}, #{price}, #{originalPrice}, #{qq}, #{wechat}, #{phone}, #{validDays})
     </insert>
+
+    <update id="updateCourseMarket">
+        update course_market
+        <set>
+            <if test="charge != null and charge != ''">
+                charge = #{charge},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="originalPrice != null">
+                original_price = #{originalPrice},
+            </if>
+            <if test="qq != null and qq != ''">
+                qq = #{qq},
+            </if>
+            <if test="wechat != null and wechat != ''">
+                wechat = #{wechat},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="validDays != null">
+                valid_days = #{validDays},
+            </if>
+            id = #{id}
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

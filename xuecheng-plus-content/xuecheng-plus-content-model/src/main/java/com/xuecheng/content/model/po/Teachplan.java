@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 @Data
 public class Teachplan {
     private Long id;
-    private String parentid;
+    private String pname;
+    private Long parentid;
     private Short grade;
     private String mediaType;
     private LocalDateTime startTime;

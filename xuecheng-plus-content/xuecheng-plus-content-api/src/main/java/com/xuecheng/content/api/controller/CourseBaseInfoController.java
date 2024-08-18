@@ -6,6 +6,7 @@ import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.model.dto.AddCourseDTO;
 import com.xuecheng.content.model.dto.CourseBaseInfoDTO;
 import com.xuecheng.content.model.dto.QueryCourseParamsDTO;
+import com.xuecheng.content.model.dto.UpdateCourseDTO;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,6 +39,12 @@ public class CourseBaseInfoController {
     @GetMapping("/course/{id}")
     public CourseBaseInfoDTO getCourseBaseById(@PathVariable("id") Long id) {
         return courseBaseInfoService.getCourseBaseInfo(id);
+    }
+
+    @Operation(summary = "更新课程基础信息")
+    @PutMapping("/course")
+    public CourseBaseInfoDTO updateCourseBaseById(@RequestBody UpdateCourseDTO updateCourseDTO) {
+        return courseBaseInfoService.updateCourseBaseInfo(updateCourseDTO);
     }
 
     @GetMapping("/hello")

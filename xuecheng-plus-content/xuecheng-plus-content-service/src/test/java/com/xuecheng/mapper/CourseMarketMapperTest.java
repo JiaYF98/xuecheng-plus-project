@@ -24,4 +24,18 @@ public class CourseMarketMapperTest {
         courseMarket.setValidDays(100);
         courseMarketMapper.insertCourseMarket(courseMarket);
     }
+
+    @Test
+    public void testUpdateCourseMarket() {
+        CourseMarket courseMarket = new CourseMarket();
+        courseMarket.setId(122L);
+        courseMarket.setCharge("202001");
+        courseMarket.setPrice(2.0);
+        courseMarket.setOriginalPrice(4.0);
+        courseMarket.setQq("test-qq-update");
+        courseMarket.setWechat("test-wechat-update");
+        courseMarket.setPhone("test-phone-update");
+        courseMarket.setValidDays(100);
+        courseMarketMapper.updateCourseMarket(courseMarket);
+    }
 }
