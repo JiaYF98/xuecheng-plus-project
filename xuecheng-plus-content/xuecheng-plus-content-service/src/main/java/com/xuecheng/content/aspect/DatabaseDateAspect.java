@@ -20,7 +20,7 @@ import java.util.List;
 public class DatabaseDateAspect {
     private final List<DBOperationType> dateOperationType = Arrays.asList(DBOperationType.INSERT, DBOperationType.UPDATE);
 
-    @Pointcut("execution(* com.xuecheng.content.mapper.*.*(..))")
+    @Pointcut("@annotation(com.xuecheng.base.annotation.DBAutoFill)")
     public void pointCut() {
     }
 
@@ -29,9 +29,6 @@ public class DatabaseDateAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         DBAutoFill dbAutoFillAnnotation = method.getAnnotation(DBAutoFill.class);
-        if (dbAutoFillAnnotation == null) {
-            return;
-        }
 
         DBOperationType dbOperationType = dbAutoFillAnnotation.value();
 
@@ -50,7 +47,7 @@ public class DatabaseDateAspect {
             createDateField.set(entity, now);
             changeDateField.setAccessible(true);
             changeDateField.set(entity, now);
-        } else if (DBOperationType.UPDATE.equals(dbOperationType)){
+        } else if (DBOperationType.UPDATE.equals(dbOperationType)) {
             Field changeDateField = entityType.getDeclaredField("changeDate");
 
             changeDateField.setAccessible(true);

@@ -1,14 +1,18 @@
 package com.xuecheng.content.service.impl;
 
 import com.xuecheng.base.constant.TeachPlanConstant;
+import com.xuecheng.base.enums.PreviewType;
+import com.xuecheng.base.enums.TechplanStatus;
 import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.mapper.TeachplanMediaMapper;
+import com.xuecheng.content.model.dto.SaveTeachplanDTO;
 import com.xuecheng.content.model.dto.TeachPlanTreeDTO;
 import com.xuecheng.content.model.po.Teachplan;
-import com.xuecheng.content.service.TeachPlanService;
+import com.xuecheng.content.service.TeachplanService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +21,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class TeachPlanServiceImpl implements TeachPlanService {
+public class TeachplanServiceImpl implements TeachplanService {
     @Autowired
     private TeachplanMapper teachPlanMapper;
     @Autowired
@@ -29,7 +33,7 @@ public class TeachPlanServiceImpl implements TeachPlanService {
 
         // 创建章节点
         Map<Long, TeachPlanTreeDTO> chaptersMap = teachplans.stream()
-                .filter(teachplan -> Objects.equals(teachplan.getParentid(), TeachPlanConstant.chapterParentId))
+                .filter(teachplan -> Objects.equals(teachplan.getParentid(), TeachPlanConstant.CHAPTER_PARENT_ID))
                 .collect(Collectors.toMap(Teachplan::getId, teachplan -> {
                     TeachPlanTreeDTO teachPlanTreeDTO = new TeachPlanTreeDTO();
                     BeanUtils.copyProperties(teachplan, teachPlanTreeDTO);
@@ -57,5 +61,23 @@ public class TeachPlanServiceImpl implements TeachPlanService {
                 });
 
         return chaptersMap.values().stream().toList();
+    }
+
+    @Transactional
+    @Override
+    public void saveTeachplan(SaveTeachplanDTO saveTeachplanDTO) {
+        Long id = saveTeachplanDTO.getId();
+        Teachplan teachplan = teachPlanMapper.selectById(id);
+        // 如果存在，则修改，不存在则插入
+        if (teachplan != null) {
+            BeanUtils.copyProperties(saveTeachplanDTO, teachplan);
+            teachPlanMapper.updateTeachplanById(teachplan);
+        } else {
+            teachplan = new Teachplan();
+            BeanUtils.copyProperties(saveTeachplanDTO, teachplan);
+            teachplan.setStatus(TechplanStatus.NORMAL.getCode());
+            teachplan.setIsPreview(PreviewType.TRUE.getCode());
+            teachPlanMapper.insertTeachplan(teachplan);
+        }
     }
 }

@@ -14,4 +14,45 @@
         from teachplan
         where course_id = #{course_id}
     </select>
+
+    <select id="selectById">
+        select
+        <include refid="Base_Column_List"/>
+        from teachplan
+        where id = #{id}
+    </select>
+
+    <insert id="insertTeachplan" useGeneratedKeys="true" keyProperty="id">
+        insert into teachplan
+        value(
+        #{id}, #{pname}, #{parentid}, #{grade}, #{mediaType}, #{startTime}, #{endTime}, #{description}, #{timelength},
+        #{orderby}, #{courseId}, #{coursePubId}, #{status}, #{isPreview}, #{createDate}, #{changeDate}
+        )
+    </insert>
+
+    <update id="updateTeachplanById">
+        update teachplan
+        <set>
+            <if test="pname != null and pname != ''">
+                pname = #{pname},
+            </if>
+            <if test="mediaType != null and mediaType != ''">
+                media_type = #{mediaType},
+            </if>
+            <if test="orderby != null">
+                orderby = #{orderby},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="isPreview != null">
+                is_preview = #{isPreview},
+            </if>
+            <if test="changeDate != null">
+                change_date = #{changeDate},
+            </if>
+            id = #{id}
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

@@ -19,6 +19,7 @@ import com.xuecheng.content.service.CourseBaseInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         return new PageResult<>(courseBases, count, pageParams.getPageNo(), pageParams.getPageSize());
     }
 
+    @Transactional
     @Override
     public CourseBaseInfoDTO addCourseBase(AddCourseDTO addCourseDTO) {
         ChargeType chargeType = ChargeType.of(addCourseDTO.getCharge());
@@ -100,6 +102,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         return courseBaseInfoDTO;
     }
 
+    @Transactional
     @Override
     public CourseBaseInfoDTO updateCourseBaseInfo(UpdateCourseDTO updateCourseDTO) {
         ChargeType chargeType = ChargeType.of(updateCourseDTO.getCharge());

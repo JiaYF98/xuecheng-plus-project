@@ -72,5 +72,6 @@ public class CourseBaseMapperTest {
         courseBase.setAuditStatus(CourseAuditStatus.FAILED.getCode());
         courseBase.setStatus(CourseStatus.UNPUBLISHED.getCode());
         courseBaseMapper.updateCourseBase(courseBase);
+        Assertions.assertNotNull(courseBase.getChangeDate());
     }
 }

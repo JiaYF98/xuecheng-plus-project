@@ -87,6 +87,15 @@
             <if test="pic != null and pic != ''">
                 pic = #{pic},
             </if>
+            <if test="changeDate != null">
+                change_date = #{changeDate},
+            </if>
+            <if test="changePeople != null and changePeople != ''">
+                change_people = #{changePeople},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus},
+            </if>
             id = #{id}
         </set>
         where id = #{id}

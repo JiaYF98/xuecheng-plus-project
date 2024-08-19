@@ -9,7 +9,7 @@ public class Teachplan {
     private Long id;
     private String pname;
     private Long parentid;
-    private Short grade;
+    private Integer grade;
     private String mediaType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
