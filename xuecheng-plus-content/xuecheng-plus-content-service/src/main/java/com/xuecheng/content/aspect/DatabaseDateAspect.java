@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -25,7 +26,7 @@ public class DatabaseDateAspect {
     }
 
     @Before("pointCut()")
-    public void before(JoinPoint joinPoint) throws NoSuchFieldException, IllegalAccessException {
+    public void before(JoinPoint joinPoint) throws IllegalAccessException {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         DBAutoFill dbAutoFillAnnotation = method.getAnnotation(DBAutoFill.class);
@@ -39,19 +40,25 @@ public class DatabaseDateAspect {
         Object entity = joinPoint.getArgs()[0];
         Class<?> entityType = method.getParameterTypes()[0];
         if (DBOperationType.INSERT.equals(dbOperationType)) {
-            Field createDateField = entityType.getDeclaredField("createDate");
-            Field changeDateField = entityType.getDeclaredField("changeDate");
+            Field createDateField = ReflectionUtils.findField(entityType, "createDate");
+            Field changeDateField = ReflectionUtils.findField(entityType, "changeDate");
 
             LocalDateTime now = LocalDateTime.now();
-            createDateField.setAccessible(true);
-            createDateField.set(entity, now);
-            changeDateField.setAccessible(true);
-            changeDateField.set(entity, now);
+            if (createDateField != null) {
+                createDateField.setAccessible(true);
+                createDateField.set(entity, now);
+            }
+            if (changeDateField != null) {
+                changeDateField.setAccessible(true);
+                changeDateField.set(entity, now);
+            }
         } else if (DBOperationType.UPDATE.equals(dbOperationType)) {
-            Field changeDateField = entityType.getDeclaredField("changeDate");
+            Field changeDateField = ReflectionUtils.findField(entityType, "changeDate");
 
-            changeDateField.setAccessible(true);
-            changeDateField.set(entity, LocalDateTime.now());
+            if (changeDateField != null) {
+                changeDateField.setAccessible(true);
+                changeDateField.set(entity, LocalDateTime.now());
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.xuecheng.service;
 
 import com.xuecheng.base.enums.PreviewType;
+import com.xuecheng.base.execption.XueChengPlusException;
 import com.xuecheng.content.model.dto.SaveTeachplanDTO;
 import com.xuecheng.content.model.dto.TeachPlanTreeDTO;
 import com.xuecheng.content.service.TeachplanService;
@@ -14,11 +15,11 @@ import java.util.List;
 @SpringBootTest
 public class TeachplanServiceTest {
     @Autowired
-    private TeachplanService teachPlanService;
+    private TeachplanService teachplanService;
 
     @Test
     public void testGetTeachPlanTreeNodes() {
-        List<TeachPlanTreeDTO> teachPlanTreeNodes = teachPlanService.getTeachPlanTreeNodes(82L);
+        List<TeachPlanTreeDTO> teachPlanTreeNodes = teachplanService.getTeachPlanTreeNodes(82L);
         Assertions.assertNotNull(teachPlanTreeNodes);
     }
 
@@ -27,6 +28,21 @@ public class TeachplanServiceTest {
         SaveTeachplanDTO saveTeachplanDTO = new SaveTeachplanDTO();
         saveTeachplanDTO.setId(290L);
         saveTeachplanDTO.setIsPreview(PreviewType.TRUE.getCode());
-        teachPlanService.saveTeachplan(saveTeachplanDTO);
+        teachplanService.saveTeachplan(saveTeachplanDTO);
+    }
+
+    @Test
+    public void testDeleteTeachplanMediaWithSectionNotEmpty() {
+        Assertions.assertThrows(XueChengPlusException.class, () -> teachplanService.deleteTeachplan(291L));
+    }
+
+    @Test
+    public void testDeleteSectionTeachplan() {
+        Assertions.assertDoesNotThrow(() -> teachplanService.deleteTeachplan(294L));
+    }
+
+    @Test
+    public void testDeleteChapterTeachplan() {
+        Assertions.assertDoesNotThrow(() -> teachplanService.deleteTeachplan(291L));
     }
 }

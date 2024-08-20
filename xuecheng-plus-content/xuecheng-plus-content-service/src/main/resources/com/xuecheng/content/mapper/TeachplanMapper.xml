@@ -55,4 +55,15 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="selectSectionCount">
+        select count(*)
+        from teachplan
+        where parentid = #{id}
+    </select>
+
+    <delete id="deleteTeachplan">
+        delete from teachplan
+        where id = #{id}
+    </delete>
 </mapper>

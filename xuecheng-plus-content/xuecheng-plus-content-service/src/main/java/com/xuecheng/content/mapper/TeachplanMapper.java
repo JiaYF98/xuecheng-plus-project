@@ -18,4 +18,8 @@ public interface TeachplanMapper {
 
     @DBAutoFill(DBOperationType.UPDATE)
     void updateTeachplanById(Teachplan teachplan);
+
+    Long selectSectionCount(Long id);
+
+    void deleteTeachplan(Long id);
 }

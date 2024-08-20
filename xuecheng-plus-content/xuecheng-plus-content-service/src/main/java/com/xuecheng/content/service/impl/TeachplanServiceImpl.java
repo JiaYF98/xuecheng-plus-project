@@ -1,8 +1,10 @@
 package com.xuecheng.content.service.impl;
 
 import com.xuecheng.base.constant.TeachPlanConstant;
+import com.xuecheng.base.enums.CommonError;
 import com.xuecheng.base.enums.PreviewType;
 import com.xuecheng.base.enums.TechplanStatus;
+import com.xuecheng.base.execption.XueChengPlusException;
 import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.mapper.TeachplanMediaMapper;
 import com.xuecheng.content.model.dto.SaveTeachplanDTO;
@@ -79,5 +81,27 @@ public class TeachplanServiceImpl implements TeachplanService {
             teachplan.setIsPreview(PreviewType.TRUE.getCode());
             teachPlanMapper.insertTeachplan(teachplan);
         }
+    }
+
+    @Transactional
+    @Override
+    public void deleteTeachplan(Long id) {
+        // todo 会有并发问题
+        Teachplan teachplan = teachPlanMapper.selectById(id);
+        if (teachplan == null) {
+            XueChengPlusException.cast(CommonError.QUERY_NULL);
+        }
+
+        // 如果要删除的是章 要检查节是否存在 不存在时才可以删除
+        if (TeachPlanConstant.CHAPTER_GRADE.equals(teachplan.getGrade())) {
+            Long count = teachPlanMapper.selectSectionCount(id);
+            if (count > 0) {
+                XueChengPlusException.cast("章下面有节时不允许删除");
+            }
+        } else {
+            teachplanMediaMapper.deleteTeachplanMediaByTeachplanId(id);
+        }
+
+        teachPlanMapper.deleteTeachplan(id);
     }
 }

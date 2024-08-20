@@ -13,4 +13,18 @@
         from teachplan_media
         where teachplan_id = #{teachplan_id}
     </select>
+
+    <insert id="insertTeachplanMedia" useGeneratedKeys="true" keyProperty="id">
+        insert into teachplan_media
+        value(
+        #{id}, #{mediaId}, #{teachplanId}, #{courseId}, #{mediaFileName}, #{createDate}, #{createPeople},
+        #{changePeople}
+        )
+    </insert>
+
+    <delete id="deleteTeachplanMediaByTeachplanId">
+        delete
+        from teachplan_media
+        where teachplan_id = #{teachplan_id}
+    </delete>
 </mapper>
