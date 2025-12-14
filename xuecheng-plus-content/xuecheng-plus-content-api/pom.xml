@@ -7,12 +7,12 @@
         <artifactId>xuecheng-plus-content</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
     <artifactId>xuecheng-plus-content-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>xuecheng-plus-content-api</name>
     <description>xuecheng-plus-content-api</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
@@ -21,6 +21,23 @@
             <artifactId>xuecheng-plus-content-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

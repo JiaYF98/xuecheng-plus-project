@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuecheng.media.mapper.MediaFilesMapper">
+
+<!--    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
+<!--    <resultMap id="BaseResultMap" type="com.xuecheng.media.model.po.MediaFiles">-->
+<!--        <id column="id" property="id"/>-->
+<!--        <result column="company_id" property="companyId"/>-->
+<!--        <result column="company_name" property="companyName"/>-->
+<!--        <result column="filename" property="filename"/>-->
+<!--        <result column="file_type" property="fileType"/>-->
+<!--        <result column="tags" property="tags"/>-->
+<!--        <result column="bucket" property="bucket"/>-->
+<!--        <result column="file_id" property="fileId"/>-->
+<!--        <result column="url" property="url"/>-->
+<!--        &lt;!&ndash;        <result column="timelength" property="timelength" />&ndash;&gt;-->
+<!--        <result column="username" property="username"/>-->
+<!--        <result column="create_date" property="createDate"/>-->
+<!--        <result column="change_date" property="changeDate"/>-->
+<!--        <result column="status" property="status"/>-->
+<!--        <result column="remark" property="remark"/>-->
+<!--        <result column="audit_status" property="auditStatus"/>-->
+<!--        <result column="audit_mind" property="auditMind"/>-->
+<!--    </resultMap>-->
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, company_id, company_name, filename, file_type, tags, bucket, file_path, file_id, url, username, create_date, change_date, status, remark, audit_status, audit_mind
+    </sql>
+
+    <insert id="insert">
+        insert into media_files(<include refid="Base_Column_List"/>)
+        values (
+        #{id} , #{companyId} , #{companyName} , #{filename} , #{fileType} , #{tags} , #{bucket} , #{filePath},
+        #{fileId}, #{url} , #{username} , #{createDate} , #{changeDate} , #{status} , #{remark} , #{auditStatus} ,
+        #{auditMind}
+        )
+    </insert>
+    <select id="selectById" resultType="MediaFiles">
+        select
+        <include refid="Base_Column_List"/>
+        from media_files
+        where id = #{id}
+    </select>
+
+    <select id="selectByPage" resultType="MediaFiles">
+        select
+        <include refid="Base_Column_List"/>
+        from media_files
+        limit ${(pageNo - 1) * pageSize}, #{pageSize}
+    </select>
+</mapper>

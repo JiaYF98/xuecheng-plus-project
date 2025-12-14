@@ -15,10 +15,25 @@ spring:
     username: root
     password: abc123
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    consul:
+      discovery:
+        instance-group: xuecheng-plus-content
+        service-name: ${spring.application.name}
+        health-check-path: /content/actuator/health
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
     use-generated-keys: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-aliases-package: com.xuecheng.content.model.po
 springdoc:
   packages-to-scan: com.xuecheng.content
+logging:
+  level:
+    root: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,7 +1,7 @@
 package com.xuecheng.mapper;
 
 import com.xuecheng.base.constant.TeachPlanConstant;
-import com.xuecheng.base.enums.MediaType;
+import com.xuecheng.base.enums.FileType;
 import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.model.po.Teachplan;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class TeachplanMapperTest {
         teachplan.setParentid(TeachPlanConstant.CHAPTER_PARENT_ID);
         teachplan.setPname("test");
         teachplan.setGrade(1);
-        teachplan.setMediaType(MediaType.VIDEO.getCode());
+        teachplan.setMediaType(FileType.VIDEO.getCode());
         teachplan.setOrderby(0);
         teachplan.setCourseId(125L);
         teachplan.setStatus(1);

@@ -3,13 +3,14 @@ package com.xuecheng.base.enums;
 import lombok.Getter;
 
 @Getter
-public enum MediaType {
-    VIDEO("1"),
-    DOCUMENT("2"),
+public enum FileType {
+    DOCUMENT("001001"),
+    AUDIO("001002"),
+    VIDEO("001003"),
     ;
     private final String code;
 
-    MediaType(String code) {
+    FileType(String code) {
         this.code = code;
     }
 }

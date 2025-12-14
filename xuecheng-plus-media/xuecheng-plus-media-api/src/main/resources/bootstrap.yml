@@ -1,0 +1,67 @@
+server:
+  servlet:
+    context-path: /media
+  port: 8082
+spring:
+  application:
+    name: media-api
+  datasource:
+    hikari:
+      connection-timeout: 10000
+      validation-timeout: 3000
+      max-lifetime: 50000
+      read-only: false
+    url: jdbc:mysql://localhost:3306/xuecheng_media
+    username: root
+    password: abc123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    consul:
+      discovery:
+        instance-group: xuecheng-plus-media
+        service-name: ${spring.application.name}
+        health-check-path: /media/actuator/health
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+minio:
+  endpoint: http://localhost:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket:
+    files: media-files
+    videos: videos
+logging:
+  level:
+    root: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+mybatis:
+  type-aliases-package: com.xuecheng.media.model.po
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+
+#    config:
+#      namespace: dev402
+#      group: xuecheng-plus-project
+#      file-extension: yaml
+#      refresh-enabled: true
+#      extension-configs:
+#        - data-id: media-service-${spring.profiles.active}.yaml
+#          group: xuecheng-plus-project
+#          refresh: true
+#      shared-configs:
+#        - data-id: swagger-${spring.profiles.active}.yaml
+#          group: xuecheng-plus-common
+#          refresh: true
+#        - data-id: logging-${spring.profiles.active}.yaml
+#          group: xuecheng-plus-common
+#          refresh: true
+#  profiles:
+#    active: dev

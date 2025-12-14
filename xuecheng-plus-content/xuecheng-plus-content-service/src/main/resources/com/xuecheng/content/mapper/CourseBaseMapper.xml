@@ -10,7 +10,7 @@
         create_people, change_people, audit_status, status
     </sql>
 
-    <select id="selectCount">
+    <select id="selectCount" resultType="Long">
         select count(*)
         from course_base;
     </select>
